@@ -1,0 +1,729 @@
+// margin xaxis center
+@mixin mx_auto {
+    margin: {
+        left: auto;
+        right: auto;
+    }
+}
+
+@mixin my_auto {
+    margin: {
+        top: auto;
+        bottom: auto;
+    }
+}
+
+// img change when hover
+@mixin imgChange() {
+    &:hover {
+        .hidden {
+            opacity: 1;
+        }
+
+        .visible {
+            opacity: 0;
+        }
+    }
+
+    a {
+        position: relative;
+        display: block;
+    }
+
+    .visible,
+    .hidden {
+        display: block;
+        position: absolute;
+        @include pseudo_pos(0);
+        transition: .4s;
+        -webkit-transition: .4s;
+        -moz-transition: .4s;
+        -ms-transition: .4s;
+        -o-transition: .4s;
+    }
+
+    .hidden {
+        opacity: 0;
+    }
+
+}
+
+// button default style removed
+
+@mixin btnDefaultRemoved {
+    border: unset;
+    background: unset;
+
+    &:hover {
+        outline: none;
+        box-shadow: 0;
+    }
+
+    &:focus {
+        box-shadow: none;
+        outline: none;
+    }
+}
+
+// overlay darkshade 
+
+@mixin overlay() {
+    @include darkOverlay();
+
+    .overlay {
+        &::after {
+            opacity: 0;
+        }
+    }
+
+    &:hover {
+        .hover_text {
+            transform: translate(-50%, -50%) scale(1);
+            -webkit-transform: translate(-50%, -50%) scale(1);
+            -moz-transform: translate(-50%, -50%) scale(1);
+            -ms-transform: translate(-50%, -50%) scale(1);
+            -o-transform: translate(-50%, -50%) scale(1);
+        }
+
+        .overlay {
+            &::after {
+                opacity: .64;
+            }
+        }
+    }
+
+    .hover_text {
+        @include pseudo();
+        @include transition();
+        z-index: 2;
+        color: #fff;
+        transform: translate(-50%, -50%) scale(0);
+        -webkit-transform: translate(-50%, -50%) scale(0);
+        -moz-transform: translate(-50%, -50%) scale(0);
+        -ms-transform: translate(-50%, -50%) scale(0);
+        -o-transform: translate(-50%, -50%) scale(0);
+        left: 50%;
+        top: 50%;
+    }
+}
+
+@mixin transition($duration: .4s) {
+    transition: $duration;
+    -webkit-transition: $duration;
+    -moz-transition: $duration;
+    -ms-transition: $duration;
+    -o-transition: $duration;
+}
+
+@mixin darkOverlay($bg:#000, $opacity: .6) {
+    position: relative;
+
+    &::after {
+        @include pseudo();
+        @include pseudo_pos(0);
+        background-color: $bg;
+        opacity: $opacity;
+        @include transition();
+        z-index:-1;
+    }
+}
+
+
+// button hover
+@mixin btnhover($bg_color:transparent, $textColor:inherit, $psuedo:after) {
+    position: relative;
+    z-index: 1;
+
+
+    &::#{$psuedo} {
+        @include pseudo();
+        @include pseudo_pos(unset, 0, -3px, 0);
+        background: $bg_color;
+        transition: .4s ease-in-out;
+        -webkit-transition: .4s ease-in-out;
+        -moz-transition: .4s ease-in-out;
+        -ms-transition: .4s ease-in-out;
+        -o-transition: .4s ease-in-out;
+        height: 0;
+        z-index: -2;
+    }
+
+    // &:hover {
+    //     color: $textColor;
+
+    //     &::#{$psuedo} {
+    //         height: calc(100% + 3px);
+    //     }
+    // }
+}
+
+
+
+@mixin flexWidth($width) {
+    flex-basis: $width;
+    max-width: $width;
+}
+
+@mixin flexCenter($al:center, $jc : center, $flex: flex) {
+    display: $flex;
+    align-items: $al;
+    justify-content: $jc;
+}
+
+@mixin listdot($width: 8px, $height: 8px, $bg: red, $rightSpace: 8px , $topSpace : 10px) {
+    position: relative;
+
+    &>li {
+        display: flex;
+        align-items: center;
+
+        &::before {
+            content: "";
+            display: block;
+            width: $width;
+            min-width: $width;
+            height: $height;
+            background-color: $bg;
+            margin-right: $rightSpace;
+            @include borderRadius(50%);
+            overflow: hidden;
+            top:$topSpace;
+            position: relative;
+        }
+    }
+}
+
+// for pseudo elements
+
+@mixin pseudo($display: block, $pos: absolute, $content: '') {
+    content: $content;
+    display: $display;
+    position: $pos;
+}
+
+@mixin pseudo_pos($top:0, $right:0, $bottom:0, $left:0) {
+    top: $top;
+    right: $right;
+    bottom: $bottom;
+    left: $left;
+}
+
+
+@mixin borderRadius($radius) {
+    border-radius: $radius;
+    -webkit-border-radius: $radius;
+    -moz-border-radius: $radius;
+    -ms-border-radius: $radius;
+    -o-border-radius: $radius;
+}
+
+// background
+// bg img
+$imagedir:'../images/';
+
+// background size cover
+@mixin bg($filename, $position:0 0, $repeat: no-repeat, $size) {
+    background: transparent url(#{$imagedir}#{$filename}) $repeat $position;
+    background-size: $size;
+}
+
+
+// position inset 
+
+@mixin inset($left:0, $right:0, $top: 0, $bottom: 0, ) {
+    left: $left;
+    right: $right;
+    top: $top;
+    bottom: $bottom;
+
+}
+
+@mixin position_center($top:-50%, $left:-50%) {
+    transform: translate($top, $left);
+
+}
+
+// For placeholder
+
+@mixin placeholder {
+    &.placeholder {
+        @content;
+    }
+
+    &:-moz-placeholder {
+        @content;
+    }
+
+    &::-moz-placeholder {
+        @content;
+    }
+
+    &:-ms-input-placeholder {
+        @content;
+    }
+
+    &::-webkit-input-placeholder {
+        @content;
+    }
+}
+
+// making arrow
+
+@mixin arrow($direction: down, $size: 5px, $color: #555) {
+    width: 0;
+    height: 0;
+
+    @if ($direction==left) {
+        border-top: $size solid transparent;
+        border-bottom: $size solid transparent;
+        border-right: $size solid $color;
+    }
+
+    @else if ($direction==right) {
+        border-top: $size solid transparent;
+        border-bottom: $size solid transparent;
+        border-left: $size solid $color;
+    }
+
+    @else if ($direction==down) {
+        border-left: $size solid transparent;
+        border-right: $size solid transparent;
+        border-top: $size solid $color;
+    }
+
+    @else {
+        border-left: $size solid transparent;
+        border-right: $size solid transparent;
+        border-bottom: $size solid $color;
+    }
+}
+
+
+// Media Height automatic
+
+@mixin mediaHeight() {
+
+    &>li {
+        height: 330px;
+
+        figure {
+            height: 100%
+        }
+
+        @include mq(smscreen) {
+            height: ((330px * 90) / 100);
+        }
+
+        @include mq(laptop) {
+            height: ((330px * 75) / 100);
+        }
+
+        @include mq(phablet) {
+            height: ((330px * 64) / 100);
+        }
+
+        @include mq(mobile) {
+            height: ((330px * 60) / 100);
+        }
+    }
+
+}
+
+// media Height manual
+
+@mixin mediaHeight2($height1: 268px, $height2: 230px, $height3: 200px, $height4: 190px, $height5: 180px) {
+    height: $height1;
+    max-height: $height1;
+    overflow: hidden;
+
+    @include mq(smscreen) {
+        height: $height2;
+        max-height: $height2;
+    }
+
+    @include mq(tablet) {
+        height: $height3;
+        max-height: $height3;
+    }
+
+    @include mq(phablet) {
+        height: $height4;
+        max-height: $height4;
+    }
+
+    @include mq(mobile) {
+        height: $height5;
+        max-height: $height5;
+    }
+}
+
+// Logo
+
+@mixin mainLogo($width) {
+    max-width: $width;
+
+    @include mq(xxxl) {
+        max-width: calc(#{$width} * 0.9);
+    }
+
+    @include mq(xl) {
+        max-width: calc(#{$width} * 0.8);
+    }
+
+    @include mq(lg) {
+        max-width: calc(#{$width} * 0.74);
+    }
+
+    @include mq(md) {
+        max-width: calc(#{$width} * 0.7);
+    }
+}
+
+
+@mixin mq($point, $max_min:max-width) {
+    @if $point==custom {
+        @media (#{$max_min}: 1700px) {
+            @content;
+        }
+    }
+
+    @if $point==xxxl {
+        @media (#{$max_min}: 1600px) {
+            @content;
+        }
+    }
+
+    @else if $point==xxl {
+        @media (#{$max_min}: 1400px) {
+            @content;
+        }
+    }
+
+    @else if $point==xl {
+        @media (#{$max_min}: 1199px) {
+            @content;
+        }
+    }
+
+    @else if $point==lg {
+        @media (#{$max_min}: 991px) {
+            @content;
+        }
+    }
+
+    @else if $point==md {
+        @media (#{$max_min}: 767px) {
+            @content;
+        }
+    }
+
+    @else if $point==sm {
+        @media (#{$max_min}: 575px) {
+            @content;
+        }
+    }
+
+    @else if $point==xsm {
+        @media (#{$max_min}: 480px) {
+            @content;
+        }
+    }
+}
+
+
+
+@mixin grid($column:3, $spacing: 15px, $alignment:left, $swapped: false, $length:1) {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: $alignment;
+
+    $col: $spacing * ($column - 1);
+
+    &>li {
+        @include flexWidth(calc((100% - #{$col}) / $column));
+        margin-bottom: $spacing;
+        margin-right: $spacing;
+        list-style: none;
+
+        &:nth-child(1n) {
+            margin-right: $spacing;
+        }
+
+        &:nth-child(#{$column}n) {
+            margin-right: 0;
+        }
+    }
+
+    @if ($column==1) {
+        &>li {
+            margin-right: 0;
+            margin-bottom: $spacing;
+        }
+    }
+
+    @if($swapped) {
+        @if($length==2) {
+            & {
+                flex-direction: row-reverse;
+
+                &>li:nth-child(1n) {
+                    margin-right: 0;
+                }
+
+                &>li:first-child {
+                    margin-right: 0;
+                }
+
+                &>li:last-child {
+                    margin-right: $spacing;
+                }
+            }
+        }
+    }
+}
+
+// bootstrap grid space mixin 
+
+@mixin rfsGridSpace($arrayName, $break) {
+
+    @each $class,
+    $space in $arrayName {
+        $spaceVal: calc($space / 2);
+
+        .#{$class} {
+            @include rfs(-($spaceVal), margin-left);
+            @include rfs(-($spaceVal), margin-right);
+
+            &>* {
+                @include rfs(0 $spaceVal 0 $spaceVal, padding);
+                margin-bottom: 0;
+
+                @include media-breakpoint-up($break) {
+                    @include rfs($space, margin-bottom);
+                }
+
+
+            }
+
+        }
+    }
+
+}
+
+@mixin rfsBottomSpacing($arrayName, $break) {
+
+    @each $class,
+    $space in $arrayName {
+
+        $scaleSpace: calc($space * 1.4);
+
+        .#{$class} {
+            &>* {
+                @include mq($break) {
+                    @include rfs($scaleSpace, margin-bottom);
+                }
+
+            }
+
+        }
+    }
+
+}
+
+
+
+@mixin imgFull($fit:cover) {
+    height: 100%;
+    width: 100%;
+    object-fit: $fit;
+}
+
+// for conainers
+
+@mixin container($p) {
+    margin-left: auto;
+    margin-right: auto;
+    @include rfs($p, padding-right);
+    @include rfs($p, padding-left);
+}
+
+// border
+
+@mixin border($psuedo:after, $t, $r, $b, $l, $color, $width:2px, $height:100%, $pos:absolute) {
+    &::#{$psuedo} {
+        content: " ";
+        position: $pos;
+        width: $width;
+        height: $height;
+        background: $color;
+        top: $t;
+        right: $r;
+        bottom: $b;
+        left: $l;
+    }
+}
+
+@mixin psuedoel($ps : after, $pos : absolute, $content: "") {
+    &::#{$ps} {
+        content: $content;
+        position: $pos;
+    }
+
+}
+
+@mixin listStyle($type, $width, $height, $color, $spacing, $margintop: 7px) {
+    &>li {
+        list-style: none;
+        @include flexCenter(unset, unset);
+
+        &::before {
+            content: "";
+            margin-top: $margintop;
+            min-width: $width;
+            height: $height;
+            background-color: $color;
+            display: block;
+            margin-right: $spacing;
+
+            @if $type==circle {
+                border-radius: 100%;
+                -webkit-border-radius: 100%;
+                -moz-border-radius: 100%;
+                -ms-border-radius: 100%;
+                -o-border-radius: 100%;
+            }
+        }
+
+        &+li {
+            @include rfs($margintop, margin-top);
+        }
+    }
+}
+
+@mixin dotted($width, $height, $color, $spacing, $margintop: 7px) {
+    &::before {
+        content: "";
+        margin-top: $margintop;
+        min-width: $width;
+        height: $height;
+        background-color: $color;
+        display: block;
+        margin-right: $spacing;
+        @include borderRadius(50%);
+    }
+}
+
+// $breakpoints: (992: 0.7,
+//     1200: 70);
+
+// $breakpoints2: (767: 2,
+//     992: 0.7,
+//     1200: 100);
+// $rem : 16;
+
+// @mixin reducer($style, $value, $breakpoints: $breakpoints) {
+//     @if $style !=null {
+//         $remConverted: $value / $rem;
+
+//         // Handle font-size separately
+//         @if $style==font-size {
+//             $output: working($remConverted, 83.3334);
+//             $output: max($output); // Restrict minimum font-size to 12px
+//             #{$style}: #{$output};
+//         }
+
+//         @else {
+//             $output: working($remConverted, 83.3334);
+//             #{$style}: $output;
+//         }
+
+//         // Handle breakpoints
+//         @each $breakpoint,
+//         $value in $breakpoints {
+//             @media (max-width: $breakpoint + px) {
+//                 $output: working($remConverted, $value);
+
+//                 // Handle font-size separately
+//                 @if $style==font-size {
+//                     $output: max($output, 12px); // Restrict minimum font-size to 12px
+//                 }
+
+//                 #{$style}: $output;
+//             }
+//         }
+//     }
+// }
+
+// @function working($a, $val) {
+//     $vwVal: $a * $val / 100;
+//     @return calc((#{$a}rem + #{$vwVal}vw) / 2);
+// }
+
+
+// adding text and bg  color 
+@each $color,
+$value in (
+    red: $red,
+    black: $black,
+    white: $white,
+    lightgray:$gray500,
+    medium_gray: $gray600,
+    darkgray: $gray700) {
+    .text_#{$color} {
+        color: $value;
+    }
+
+    .bg_#{$color} {
+        background-color: $value;
+    }
+}
+
+
+$xxxl : 0.9;
+$xl : 0.84;
+$lg : 0.77;
+$md : 0.6;
+$sm: 0.4;
+
+@mixin reducer($top, $bottom) {
+    padding: max($top, 30px) 0 max($bottom, 30px) 0;
+
+    @include mq(xxxl) {
+        padding: max(calc($top * $xxxl), 30px) 0 max(calc($bottom * $xxxl), 30px) 0;
+    }
+
+    @include mq(xl) {
+        padding: max(calc($top * $xl), 30px) 0 max(calc($bottom * $xl), 30px) 0;
+    }
+
+    @include mq(lg) {
+        padding: max(calc($top * $lg), 30px) 0 max(calc($bottom * $lg), 30px) 0;
+    }
+
+    @include mq(md) {
+        padding: max(calc($top * $md), 30px) 0 max(calc($bottom * $md), 30px) 0;
+    }
+
+    @include mq(sm) {
+        padding: max(calc($top * $sm), 30px) 0 max(calc($bottom * $sm), 30px) 0;
+    }
+}
+
+@mixin flexWrap($p) {
+    @include mq(lg) {
+        flex-direction: column;
+
+        .left {
+            @include flexWidth(240px);
+            width: 100%;
+            min-height: $teamHeight_lg;
+            height: $teamHeight_lg;
+            margin-bottom: 32px;
+        }
+
+        .right {
+            @include flexWidth(100%);
+            #{$p}: 0;
+        }
+    }
+}
